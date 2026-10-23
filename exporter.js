@@ -56,12 +56,12 @@ window.XFExporter = (function () {
     const b64 = (window.XF_TEMPLATE_BASE64 || '').replace(/[\s\r\n]/g, '');
     if (b64) return await JSZipLib.loadAsync(b64, { base64: true });
 
-    // 兜底：直接取 assets/template.xlsx（需 http(s) 环境，file:// 下会失败）
+    // 兜底：直接取同目录下的 template.xlsx（需 http(s) 环境，file:// 下会失败）
     try {
-      const resp = await fetch('assets/template.xlsx', { cache: 'no-store' });
+      const resp = await fetch('template.xlsx', { cache: 'no-store' });
       if (resp && resp.ok) return await JSZipLib.loadAsync(await resp.arrayBuffer());
     } catch (e) { /* ignore */ }
-    throw new Error('无法读取内置导入模板，请确认 assets/template-data.js 已正确加载');
+    throw new Error('无法读取内置导入模板，请确认同目录下的 template-data.js 已正确加载');
   }
 
   // 依据 workbook.xml + rels 定位目标 sheet 的 xml 路径
